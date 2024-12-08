@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
-
 """
 Define class SessionDButh
 """
-
 from .session_exp_auth import SessionExpAuth
 from models.user_session import UserSession
 
@@ -20,7 +18,6 @@ class SessionDBAuth(SessionExpAuth):
         Args:
            user_id (str): user id
         """
-        # Create a session ID for the user_id
         session_id = super().create_session(user_id)
         if not session_id:
             return None
@@ -28,9 +25,7 @@ class SessionDBAuth(SessionExpAuth):
             "user_id": user_id,
             "session_id": session_id
         }
-        # Create a UserSession instance with the user_id and session_id
         user = UserSession(**kw)
-        # Save the UserSession instance to the database
         user.save()
         return session_id
 
@@ -54,19 +49,11 @@ class SessionDBAuth(SessionExpAuth):
         """
         if request is None:
             return False
-
-        # Get the session ID from the request cookie
         session_id = self.session_cookie(request)
-
         if not session_id:
             return False
-
-        # Search for the UserSession instance with the given session ID
         user_session = UserSession.search({"session_id": session_id})
-
         if user_session:
-            # Remove the UserSession instance from the database
             user_session[0].remove()
             return True
-
         return False

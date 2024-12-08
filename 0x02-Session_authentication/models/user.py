@@ -1,5 +1,4 @@
-#!/usr/bin/env python3
-""" User module
+er module
 """
 import hashlib
 from models.base import Base
